@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phishing Detection</title>
+    {% load static%}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
+
+<body class="bg">
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{form.as_p}}
+        <div class="url">
+            <label for="url">Enter URL</label><br>
+            <input type="text" id="url" name="url">
+            <button>Submit</button>
+            {% if url == "Safe" %}
+            <h1 style="color: greenyellow;">{{url}}</h1>
+            {% else %}
+            <h1 style="color: red;">{{url}}</h1>
+            {% endif %}
+        </div>
+    </form>
+</body>
+
+</html>
