@@ -22,5 +22,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.void, name='main'),
     path('phishing/', views.index, name='phishing'),
-    path('spamEmail/', views.spamMail, name='spamMail')
+    path('spamEmail/', views.spamMail, name='spamMail'),
+    path('passShield/', views.passShield, name='passShield')
 ]

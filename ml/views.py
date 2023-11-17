@@ -1,7 +1,4 @@
-import numpy as np  # linear algebra
-import os
 import pandas as pd  # data processing, CSV file I/O (e.g. pd.read_csv)
-import joblib
 from django.shortcuts import render, redirect
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
@@ -13,6 +10,8 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.pipeline import Pipeline
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
+import hashlib
+import requests
 
 MODEL_PATH = 'path/to/your/model.joblib'
 DATASET_PATH = 'path/to/your/dataset_phishing.csv'
@@ -116,3 +115,40 @@ def spamMail(request):
         else:
             mail = "SPAM"
     return render(request, 'spam.html', {'mail': mail})
+
+
+def check_pwned_password(password):
+    sha_password = hashlib.sha1(password.encode()).hexdigest()
+    sha_prefix = sha_password[0:5]
+    sha_postfix = sha_password[5:].upper()
+
+    url = 'https://api.pwnedpasswords.com/range/' + sha_prefix
+
+    payload = {}
+    headers = {}
+    response = requests.request('GET', url, headers=headers, data=payload)
+
+    pwnd_list = response.text.split("\r\n")
+
+    for pwnd_pass in pwnd_list:
+        pwnd_hash = pwnd_pass.split(":")
+        pwnd_suffix = pwnd_hash[0]
+
+        if pwnd_suffix == sha_postfix:
+            return int(pwnd_hash[1])  # Password found in the compromised list
+
+    return 0
+
+
+def passShield(request):
+    check = " "
+    if request.method == 'POST':
+        password_to_check = request.POST.get('pass')
+        compromised_count = check_pwned_password(password_to_check)
+
+        if compromised_count == 0:
+            check = "Good news! The password has not been compromised."
+        else:
+            check = f"Warning! The password has been compromised {compromised_count}"
+
+    return render(request, 'pass.html', {'check': check})

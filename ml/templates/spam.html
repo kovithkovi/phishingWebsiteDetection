@@ -32,7 +32,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'spamMail' %}">Spam Message</a>
                     </li>
-
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'passShield' %}">PassSheild Scan</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -42,13 +44,13 @@
         {% csrf_token %}
         {{form.as_p}}
         <div class="url">
-            <label for="email_text">Enter Email Text:</label><br>
+            <label for="email_text">Enter Text:</label><br>
             <textarea id="email_text" name="email_text" rows="3" cols="50" class="textarea"></textarea><br>
             <button class="">Submit</button>
             {% if mail == "HAM" %}
-            <h1 style="color: greenyellow;">{{mail}}</h1>
+            <h1 style="color: greenyellow">Safe Message</h1>
             {% else %}
-            <h1 style="color: red">{{mail}}</h1>
+            <h1 style="color: red">Spam Message</h1>
             {% endif %}
         </div>
     </form>
