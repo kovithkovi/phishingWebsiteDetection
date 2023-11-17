@@ -17,7 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from . import views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.index)
+    path('', views.void, name='main'),
+    path('phishing/', views.index, name='phishing'),
+    path('spamEmail/', views.spamMail, name='spamMail')
 ]
