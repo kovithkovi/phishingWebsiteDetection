@@ -1,10 +1,8 @@
 import pandas as pd  # data processing, CSV file I/O (e.g. pd.read_csv)
-from django.shortcuts import render, redirect
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from sklearn.feature_extraction.text import TfidfVectorizer
 from django.http import JsonResponse
-import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.pipeline import Pipeline
@@ -73,7 +71,7 @@ def void(request):
 
 
 def spamMail(request):
-    mail = ""  # Initialize mail with an empty string
+    mail = " "  # Initialize mail with an empty string
 
     if request.method == 'POST':
         # Get the list of email texts from the HTML form
